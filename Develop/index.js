@@ -7,62 +7,56 @@ const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
 
-//Store every id
-const idArray = [];
-//Store every object member
-const employees = [];
-//Store the member with its html format
-const memberInfoFinal = [];
-
-
-const managerQuestion = [
+// Manager´s questions: Name, ID, email and phone number.
+const managerQuestions = [
     {
       type: "input",
-      message: "Enter the manager´s name",
+      message: "Please, enter the Manager´s name:",
       name: "name",
     },
     {
       type: "input",
-      message: "Enter the manager's id",
+      message: "Enter the Manager's ID:",
       name: "id",
     },
     {
       type: "input",
-      message: "Enter manager's email",
+      message: "Enter Manager's email:",
       name: "email",
     },
     {
       type: "input",
-      message: "Enter manager´s office number",
-      name: "number",
+      message: "Enter Manager´s Office Number:",
+      name: "phone",
     },
   ];
 
-
-const engineerQuestion = [
+//Engineer's questions: Name, ID, email and GitHub.
+const engineerQuestions = [
   {
     type: "input",
-    message: "Enter the engineer's name",
+    message: "Please, enter the engineer's name:",
     name: "name",
   },
   {
     type: "input",
-    message: "Enter the engineer's id",
+    message: "Enter the engineer's ID:",
     name: "id",
   },
   {
     type: "input",
-    message: "Enter engineer's email",
+    message: "Enter engineer's email:",
     name: "email",
   },
   {
     type: "input",
-    message: "Enter the engineer's GitHub username",
+    message: "Enter the engineer's GitHub username:",
     name: "github",
   },
 ];
 
-const internQuestion = [
+// Intern's questions: Name, ID, email and school's name.
+const internQuestions = [
     {
       type: "input",
       message: "Enter the intern´s name",
@@ -85,20 +79,25 @@ const internQuestion = [
     },
   ];
 
-//Prompt member loop
+
+  //Ask to add another member
 const memberTeam = [
     {
         type: "list",
         name: "member",
-        message: "Which type of team member would you like to add",
+        message: "Which team member would you like to add?",
         choices: [
             'Engineer',
             'Intern',
-            'I dont to want to add any more team members'
+            'I don´t want to add someone else'
         ]
 
     },
 ];
+
+const idArray = [];
+const employees = [];
+const memberInfoFinal = [];
 
 //Capitalize every word in a sentence
 function capitalize(str) {
@@ -107,29 +106,28 @@ function capitalize(str) {
 }
 
 //Ask if you want to add a new member
-const promptForNewMember = () => {
-    inquirer.prompt(memberTeam)
+const addMember = () => {
+    inquirer
+        .prompt(memberTeam)
         .then(answer => {
-            //Show the question to add a new engineer member
+            //Add an Engineer
             if (answer.member === "Engineer") {
-                promptForEngineer();
-                //Show the question to add a new intern member    
+                promptEngineer();
+                //Add an intern  
             } else if (answer.member === "Intern") {
-                promptForIntern();
+                promptIntern();
             } else {
-                //Create a html with the memebers added 
+                //Create a html with the members added 
                 renderOutput(employees);
-
-
-
             }
-
         })
 };
 
-//Show the question of manager on the terminal and create a manager class
-const promptForManager = () => {
-    inquirer.prompt(managerQuestion)
+// Display the questions in the terminal
+// Manager
+const promptManager = () => {
+    inquirer
+        .prompt(managerQuestions)
         .then(answer => {
             const name = capitalize(answer.name);
             const email = answer.email;
@@ -138,13 +136,14 @@ const promptForManager = () => {
             employees.push(newManager);
             idArray.push(answer.id);
             //Call the prompt member to ask if you want to add a new member
-            promptForNewMember();
+            addMember();
         })
 };
 
-//Show the question of engineer on the terminal and create a engineer class
-const promptForEngineer = () => {
-    inquirer.prompt(engineerQuestion)
+//Engineer
+const promptEngineer = () => {
+    inquirer
+        .prompt(engineerQuestions)
         .then(answer => {
             const name = capitalize(answer.name);
             const email = answer.email;
@@ -154,13 +153,14 @@ const promptForEngineer = () => {
             employees.push(newEngineer);
             idArray.push(answer.id);
             //Call the prompt member to ask if you want to add a new member
-            promptForNewMember();
+            addMember();
         })
 };
 
-//Show the question of intern on the terminal and create a intern class
-const promptForIntern = () => {
-    inquirer.prompt(internQuestion)
+//Intern
+const promptIntern = () => {
+    inquirer
+        .prompt(internQuestions)
         .then(answer => {
             const name = capitalize(answer.name);
             const email = answer.email;
@@ -170,7 +170,7 @@ const promptForIntern = () => {
             employees.push(newIntern);
             idArray.push(answer.id);
             //Call the prompt member to ask if you want to add a new member
-            promptForNewMember();
+            addMember();
 
         })
 };
@@ -209,13 +209,12 @@ function renderOutput(memberArray) {
 
 
     //Create a final html 
-    fillIndex();
+    createIndex();
 
 };
 
-//Replace the info of every member in its template
+//Create index with the information of every member
 function fileMember(srcURL, destURL, data, regexArray) {
-    //Take the original template and create another with the info of the member
     createFile(srcURL, destURL);
     for (let i = 0; i < data.length; i++) {
         replace({
@@ -226,18 +225,17 @@ function fileMember(srcURL, destURL, data, regexArray) {
             silent: true,
         });
     }
-    //Add the updated template to array (Append every template member such a string) 
-    memberInfoFinal.push(myfun(destURL));
+    memberInfoFinal.push(readFile(destURL));
 };
 
-//Read the file and returns its content
-function myfun(filePath) {
+//Read the file
+function readFile(filePath) {
     console.log(fs.readFileSync(filePath, 'utf8'));
     return fs.readFileSync(filePath, 'utf8');
 };
 
-//Append in the main file (index) all the members 
-function fillIndex() {
+//Append all members in the main index.
+function createIndex() {
     const srcIndex = './src/index.html'
     const destIndex = './dist/index.html';
     createFile(srcIndex, destIndex);
@@ -269,9 +267,8 @@ function createFile(srcURL, destURL) {
     });
 };
 
-//Start the functionality of application
+// Function call to initialize app
 const init = () => {
-    //Show the question of manager on the terminal
-    promptForManager();
+    promptManager();
 };
 init();

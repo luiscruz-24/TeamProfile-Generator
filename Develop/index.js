@@ -178,7 +178,9 @@ const promptIntern = () => {
 //Fill the html templates with the memebers added
 function renderOutput(memberArray) {
     memberArray.forEach(member => {
+        
         if (member.getRole() === "Manager") {
+
             const email = '<a href="mailto:' + member.getEmail() + '">Email: ' + member.getEmail() + '</a>';
             const data = [member.getName(), member.getId(), email, member.getOfficeNumber()];
             const regexArray = ["name", "ids", "email", "phone"];
@@ -186,16 +188,20 @@ function renderOutput(memberArray) {
             const destURL = './dist/manager-' + member.getId() + '.html';
             //Fill out manager html file with the object manager
             fileMember(srcURL, destURL, data, regexArray);
+
         } else if (member.getRole() === "Engineer") {
+
             const email = '<a href="mailto:' + member.getEmail() + '">Email: ' + member.getEmail() + '</a>';
             const github = '<a href="https://github.com/' + member.getGithub() + '" target="blank">GitHub: ' + member.getGithub() + '</a>'
             const data = [member.getName(), member.getId(), email, github];
             const regexArray = ["name", "id-engineer", "email-engineer", "github-engineer"];
             const srcURL = path.resolve(__dirname, './src/engineer.html');
             const destURL = path.resolve(__dirname, './dist/engineer-' + member.getId() + '.html');
+
             //Fill out engineer html file with the object engineer 
             fileMember(srcURL, destURL, data, regexArray);
         } else if (member.getRole() === "Intern") {
+
             const email = '<a href="mailto:' + member.getEmail() + '">Email: ' + member.getEmail() + '</a>';
             const data = [member.getName(), member.getId(), email, member.getSchool()];
             const regexArray = ["name-intern", "id-intern", "email-intern", "school-intern"];

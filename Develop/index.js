@@ -260,7 +260,7 @@ function createIndex() {
 function createFile(srcURL, destURL) {
     fs.appendFile(destURL, '', function (err) {
         if (err) throw err;
-        console.log('Saved!');
+        console.log('File Saved');
     });
     fs.copyFile(srcURL, destURL, (error) => {
         // incase of any error
@@ -269,7 +269,7 @@ function createFile(srcURL, destURL) {
             return;
         }
 
-        console.log("Copied Successfully!");
+        console.log("File Copied");
     });
 };
 

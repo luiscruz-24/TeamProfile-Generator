@@ -43,6 +43,10 @@ npm install replace
 
 ### Terminal Mock Up
 
+![Terminal Mock-Up](./Develop/images/terminal_mockup.JPG)
+
 ### HTML Mock Up
+
+![index Mock-Up](./Develop/images/index_mockup.JPG)
 
 To see a demonstrative video on how to use the tool, click on the following link: https://drive.google.com/drive/folders/184goyV14sN6B57ZP_xq2X1LWSs22hCqG?usp=sharing
